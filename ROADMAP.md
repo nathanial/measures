@@ -23,19 +23,17 @@ Added 15 tests in `MeasuresTests/CompoundUnitTests.lean`.
 
 ---
 
-### [Priority: High] Pretty Printing with Unit Symbols
+### ~~[Priority: High] Pretty Printing with Unit Symbols~~ ✅ COMPLETED
 
-**Description:** Enhance `Quantity.toString` to display values with their unit symbols (e.g., "5.0 m" instead of just "5.0").
+**Description:** Format quantities with their unit symbols.
 
-**Rationale:** The current `toString` implementation only outputs the raw numeric value, which loses important context. Users expect to see quantities with their units for debugging and display purposes.
+**Resolution:** Added to `Measures/Core/Unit.lean`:
+- `Quantity.format` - Format with unit symbol: `distance.format meter` → `"100 m"`
+- `Quantity.formatLong` - Format with full unit name: `distance.formatLong meter` → `"100 meter"`
+- Both accept optional precision parameter (default 2)
+- Trailing zeros are trimmed for clean output
 
-**Affected Files:**
-- `Measures/Core/Quantity.lean` - `toString` function (line ~81-83)
-- May require storing unit information or adding a `format` function with explicit unit parameter
-
-**Estimated Effort:** Small
-
-**Dependencies:** None
+Added 8 tests in `MeasuresTests/QuantityTests.lean`.
 
 ---
 

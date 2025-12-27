@@ -180,6 +180,39 @@ def in' (q : Quantity d) (u : Unit d) : Float := u.fromQuantity q
 /-- Alias for `in'`: `distance.asUnit foot` -/
 def asUnit (q : Quantity d) (u : Unit d) : Float := u.fromQuantity q
 
+/-! ## Pretty Printing -/
+
+/-- Format a float with a given number of decimal places.
+    Removes trailing zeros after the decimal point. -/
+private def formatFloat (x : Float) (precision : Nat) : String :=
+  let factor := Float.pow 10.0 precision.toFloat
+  let rounded := Float.round (x * factor) / factor
+  let str := s!"{rounded}"
+  -- Find decimal point and trim trailing zeros
+  match str.splitOn "." with
+  | [intPart] => intPart  -- No decimal point
+  | [intPart, fracPart] =>
+    -- Remove trailing zeros from fractional part
+    let trimmed := fracPart.dropRightWhile (· == '0')
+    if trimmed.isEmpty then
+      intPart
+    else
+      s!"{intPart}.{trimmed}"
+  | _ => str  -- Shouldn't happen, just return as-is
+
+/-- Format a quantity with a unit symbol.
+    Example: `distance.format meter` returns `"100 m"`
+    Example: `speed.format meterPerSecond 2` returns `"25.5 m/s"` -/
+def format (q : Quantity d) (u : Unit d) (precision : Nat := 2) : String :=
+  let value := u.fromQuantity q
+  s!"{formatFloat value precision} {u.symbol}"
+
+/-- Format a quantity with a unit, showing the full unit name.
+    Example: `distance.formatLong meter` returns `"100 meter"` -/
+def formatLong (q : Quantity d) (u : Unit d) (precision : Nat := 2) : String :=
+  let value := u.fromQuantity q
+  s!"{formatFloat value precision} {u.name}"
+
 end Quantity
 
 end Measures

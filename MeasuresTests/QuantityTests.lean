@@ -10,6 +10,7 @@ namespace MeasuresTests.QuantityTests
 open Crucible
 open Measures
 open Measures.Units.SI
+open Measures.Units.Imperial
 
 testSuite "Quantity Construction"
 
@@ -71,6 +72,51 @@ testSuite "Quantity Display"
 test "toString" := do
   let q := 42.0 *: meter
   ensure (q.toString.length > 0) "toString should produce output"
+
+testSuite "Pretty Printing"
+
+test "format with symbol" := do
+  let distance := 100.0 *: meter
+  let formatted := distance.format meter
+  -- Trailing zeros are trimmed: "100.0" -> "100"
+  ensure (formatted == "100 m") s!"Expected '100 m', got '{formatted}'"
+
+test "format with precision" := do
+  let distance := 123.456789 *: meter
+  let formatted := distance.format meter 2
+  ensure (formatted == "123.46 m") s!"Expected '123.46 m', got '{formatted}'"
+
+test "format velocity" := do
+  let speed := 25.0 *: meterPerSecond
+  let formatted := speed.format meterPerSecond
+  ensure (formatted == "25 m/s") s!"Expected '25 m/s', got '{formatted}'"
+
+test "format with unit conversion" := do
+  let distance := 1000.0 *: meter
+  let formatted := distance.format kilometer
+  ensure (formatted == "1 km") s!"Expected '1 km', got '{formatted}'"
+
+test "formatLong shows full name" := do
+  let distance := 5.0 *: meter
+  let formatted := distance.formatLong meter
+  ensure (formatted == "5 meter") s!"Expected '5 meter', got '{formatted}'"
+
+test "format compound unit" := do
+  let velocity := meter / second
+  let speed := 10.0 *: velocity
+  let formatted := speed.format velocity
+  ensure (formatted == "10 m/s") s!"Expected '10 m/s', got '{formatted}'"
+
+test "format with different unit" := do
+  let distance := 1.0 *: mile
+  let formatted := distance.format kilometer 2
+  -- 1 mile ≈ 1.609 km
+  ensure (formatted == "1.61 km") s!"Expected '1.61 km', got '{formatted}'"
+
+test "format preserves non-zero decimals" := do
+  let distance := 3.5 *: meter
+  let formatted := distance.format meter
+  ensure (formatted == "3.5 m") s!"Expected '3.5 m', got '{formatted}'"
 
 #generate_tests
 

@@ -180,6 +180,19 @@ def distance := 4.24 *: lightYear
 - `value *: unit` - Create quantity in unit
 - `q.asUnit unit` - Express quantity in unit
 
+### Pretty Printing
+
+- `q.format unit` - Format with symbol: `"100 m"`
+- `q.format unit n` - Format with n decimal places
+- `q.formatLong unit` - Format with full name: `"100 meter"`
+
+```lean
+let distance := 1609.344 *: meter
+distance.format kilometer      -- "1.61 km"
+distance.format meter 0        -- "1609 m"
+distance.formatLong kilometer  -- "1.61 kilometer"
+```
+
 ### Unit Operations
 
 - `u1 * u2` - Multiply units (dimensions combine)
