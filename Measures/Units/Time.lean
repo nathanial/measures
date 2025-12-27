@@ -6,6 +6,7 @@
 
 import Measures.Core.Unit
 import Measures.Dimensions
+import Measures.Units.SI
 
 namespace Measures.Units.Time
 
@@ -14,8 +15,8 @@ open Dimension
 
 /-! ## Common Time Units -/
 
-/-- The second (SI base unit). -/
-def second : Unit Time := Unit.siBase "second" "s"
+/-- The second (SI base unit, re-exported from SI). -/
+abbrev second : Unit Time := Units.SI.second
 
 /-- The minute (60 seconds). -/
 def minute : Unit Time := Unit.scale "minute" "min" 60.0
@@ -43,14 +44,14 @@ def century : Unit Time := Unit.scale "century" "c" 3155760000.0
 
 /-! ## Small Time Units -/
 
-/-- The millisecond. -/
-def millisecond : Unit Time := Unit.scale "millisecond" "ms" 0.001
+/-- The millisecond (re-exported from SI). -/
+abbrev millisecond : Unit Time := Units.SI.millisecond
 
-/-- The microsecond. -/
-def microsecond : Unit Time := Unit.scale "microsecond" "μs" 1e-6
+/-- The microsecond (re-exported from SI). -/
+abbrev microsecond : Unit Time := Units.SI.microsecond
 
-/-- The nanosecond. -/
-def nanosecond : Unit Time := Unit.scale "nanosecond" "ns" 1e-9
+/-- The nanosecond (re-exported from SI). -/
+abbrev nanosecond : Unit Time := Units.SI.nanosecond
 
 /-- The picosecond. -/
 def picosecond : Unit Time := Unit.scale "picosecond" "ps" 1e-12
@@ -68,8 +69,8 @@ def siderealYear : Unit Time := Unit.scale "sidereal year" "syr" 31558149.8
 
 /-! ## Frequency Aliases -/
 
-/-- Hertz (per second). -/
-def hertz : Unit Frequency := Unit.siBase "hertz" "Hz"
+/-- Hertz (per second, re-exported from SI). -/
+abbrev hertz : Unit Frequency := Units.SI.hertz
 
 /-- Beats per minute (for music). -/
 def bpm : Unit Frequency := Unit.scale "beats per minute" "bpm" (1.0 / 60.0)

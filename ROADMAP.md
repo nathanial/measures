@@ -293,58 +293,35 @@ A prioritized list of potential improvements, new features, code cleanup opportu
 
 ## Code Cleanup
 
-### [Priority: High] Unused Precision Parameter in toString
+### ~~[Priority: High] Unused Precision Parameter in toString~~ ✅ COMPLETED
 
 **Issue:** `Quantity.toString` accepts a `precision` parameter but ignores it.
 
-**Location:** `/Measures/Core/Quantity.lean` line 81
-
-**Action Required:** Either implement precision formatting or remove the parameter to avoid confusion.
-
-**Estimated Effort:** Small
+**Resolution:** Implemented `roundToPrecision` helper and updated `toString` to use it.
 
 ---
 
-### [Priority: Medium] Duplicated approxEq Helper in Tests
+### ~~[Priority: Medium] Duplicated approxEq Helper in Tests~~ ✅ COMPLETED
 
-**Issue:** The `approxEq` function is defined identically in both `ArithmeticTests.lean` and `ConversionTests.lean`.
+**Issue:** The `approxEq` function was defined identically in both test files.
 
-**Location:**
-- `/MeasuresTests/ArithmeticTests.lean` line 16
-- `/MeasuresTests/ConversionTests.lean` line 18
-
-**Action Required:** Extract to a shared test utilities module or use `Quantity.approxEq` directly.
-
-**Estimated Effort:** Small
+**Resolution:** Created `MeasuresTests/TestUtils.lean` with shared `approxEq` function. Both test files now import this module.
 
 ---
 
-### [Priority: Medium] Duplicated Pi Constant
+### ~~[Priority: Medium] Duplicated Pi Constant~~ ✅ COMPLETED
 
-**Issue:** Pi is defined in multiple places:
-- `Measures/Units/Angle.lean` line 17
-- `MeasuresTests/ConversionTests.lean` line 22
+**Issue:** Pi was defined in multiple places.
 
-**Location:** See above
-
-**Action Required:** Consider exporting a single pi constant from the library (possibly in a `Measures.Constants` module).
-
-**Estimated Effort:** Small
+**Resolution:** Created `Measures/Constants.lean` with `π` and `τ` constants. Updated `Angle.lean` and `TestUtils.lean` to use this module.
 
 ---
 
-### [Priority: Medium] Inconsistent Unit Definition Patterns
+### ~~[Priority: Medium] Inconsistent Unit Definition Patterns~~ ✅ COMPLETED
 
-**Issue:** SI.lean uses `siBase` and prefix functions, while other unit files use direct `scale` calls. Temperature.lean duplicates `kelvin` that is also in SI.lean.
+**Issue:** Temperature.lean and Time.lean duplicated units from SI.lean.
 
-**Location:**
-- `/Measures/Units/SI.lean`
-- `/Measures/Units/Temperature.lean` line 27 (duplicates SI.kelvin)
-- `/Measures/Units/Time.lean` line 18 (duplicates SI.second), lines 47-59 (duplicates SI millisecond etc.)
-
-**Action Required:** Either consolidate duplicates or document the intentional separation. Consider having Temperature.lean and Time.lean import and re-export from SI.lean.
-
-**Estimated Effort:** Small
+**Resolution:** Updated both files to import SI.lean and use `abbrev` to re-export units (`kelvin`, `second`, `millisecond`, `microsecond`, `nanosecond`, `hertz`).
 
 ---
 

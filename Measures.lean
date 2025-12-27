@@ -44,6 +44,9 @@ import Measures.Core.Unit
 -- Common dimensions
 import Measures.Dimensions
 
+-- Constants
+import Measures.Constants
+
 -- Operations
 import Measures.Ops.Arithmetic
 import Measures.Ops.Comparison

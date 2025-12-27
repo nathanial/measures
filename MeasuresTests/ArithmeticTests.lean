@@ -4,6 +4,7 @@
 
 import Measures
 import Crucible
+import MeasuresTests.TestUtils
 
 namespace MeasuresTests.ArithmeticTests
 
@@ -11,10 +12,7 @@ open Crucible
 open Measures
 open Measures.Quantity
 open Measures.Units.SI
-
-/-- Check if two floats are approximately equal. -/
-def approxEq (a b : Float) (tol : Float := 1e-6) : Bool :=
-  Float.abs (a - b) ≤ tol
+open MeasuresTests.TestUtils
 
 testSuite "Addition and Subtraction"
 

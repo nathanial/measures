@@ -4,6 +4,7 @@
 
 import Measures
 import Crucible
+import MeasuresTests.TestUtils
 
 namespace MeasuresTests.ConversionTests
 
@@ -13,13 +14,7 @@ open Measures.Units.SI
 open Measures.Units.Imperial
 open Measures.Units.Temperature
 open Measures.Units.Angle
-
-/-- Check if two floats are approximately equal. -/
-def approxEq (a b : Float) (tol : Float := 1e-6) : Bool :=
-  Float.abs (a - b) ≤ tol
-
-/-- Pi constant for tests. -/
-private def π : Float := 3.14159265358979323846
+open MeasuresTests.TestUtils
 
 testSuite "SI Prefix Conversions"
 

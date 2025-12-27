@@ -7,14 +7,13 @@
 
 import Measures.Core.Unit
 import Measures.Dimensions
+import Measures.Constants
 
 namespace Measures.Units.Angle
 
 open Measures
+open Measures.Constants
 open Dimension
-
-/-- Pi constant for angle calculations. -/
-private def π : Float := 3.14159265358979323846
 
 /-! ## Angle Units
 

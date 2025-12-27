@@ -77,10 +77,15 @@ def sdiv (q : Quantity d) (s : Float) : Quantity d := { value := q.value / s }
 
 /-! ## Display -/
 
-/-- Convert to string with given precision. -/
-def toString (q : Quantity d) (_precision : Nat := 4) : String :=
-  -- Simple implementation: just show the value
-  s!"{q.value}"
+/-- Round a float to a given number of decimal places. -/
+private def roundToPrecision (x : Float) (precision : Nat) : Float :=
+  let factor := Float.pow 10.0 precision.toFloat
+  Float.round (x * factor) / factor
+
+/-- Convert to string with given precision (decimal places). -/
+def toString (q : Quantity d) (precision : Nat := 6) : String :=
+  let rounded := roundToPrecision q.value precision
+  s!"{rounded}"
 
 instance : ToString (Quantity d) where
   toString q := q.toString

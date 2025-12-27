@@ -14,6 +14,7 @@
 
 import Measures.Core.Unit
 import Measures.Dimensions
+import Measures.Units.SI
 
 namespace Measures.Units.Temperature
 
@@ -22,9 +23,9 @@ open Dimension
 
 /-! ## Absolute Temperature Scales -/
 
-/-- Kelvin - SI unit of thermodynamic temperature.
+/-- Kelvin - SI unit of thermodynamic temperature (re-exported from SI).
     Absolute scale, 0K = absolute zero. -/
-def kelvin : Unit Temperature := Unit.siBase "kelvin" "K"
+abbrev kelvin : Unit Temperature := Units.SI.kelvin
 
 /-- Rankine - Absolute scale using Fahrenheit-sized degrees.
     0°R = absolute zero, 1°R = 1°F temperature difference. -/
