@@ -122,6 +122,30 @@ def force := (5.0 *: kilogram) *. (9.8 *: meterPerSecondSquared)
 -- force : Quantity { mass := 1, length := 1, time := -2, ... }
 ```
 
+## Compound Units
+
+Build complex units from simpler ones using operators:
+
+```lean
+open Measures.Units.SI
+
+-- Create velocity unit from meter and second
+def velocity := meter / second
+def speed := 25.0 *: velocity  -- 25 m/s
+
+-- Create derived units
+def energyUnit := newton * meter  -- N·m = J
+def work := 100.0 *: energyUnit
+
+-- Unit powers
+def area := meter.sq      -- m²
+def volume := meter.cube  -- m³
+def freq := second.recip  -- 1/s = Hz
+
+-- Complex expressions
+def forceUnit := kilogram * meter / (second * second)  -- kg·m/s² = N
+```
+
 ## Custom Units
 
 Define your own units easily:
@@ -155,3 +179,12 @@ def distance := 4.24 *: lightYear
 
 - `value *: unit` - Create quantity in unit
 - `q.asUnit unit` - Express quantity in unit
+
+### Unit Operations
+
+- `u1 * u2` - Multiply units (dimensions combine)
+- `u1 / u2` - Divide units (dimensions combine)
+- `u.sq` - Square a unit
+- `u.cube` - Cube a unit
+- `u.recip` - Reciprocal of a unit
+- `u.pow n` - Raise unit to integer power

@@ -7,6 +7,7 @@ import MeasuresTests.DimensionTests
 import MeasuresTests.QuantityTests
 import MeasuresTests.ConversionTests
 import MeasuresTests.ArithmeticTests
+import MeasuresTests.CompoundUnitTests
 import Crucible
 
 open Crucible

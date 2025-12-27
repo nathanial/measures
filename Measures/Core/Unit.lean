@@ -67,6 +67,67 @@ def withPrefix (u : Unit d) (prefixName prefixSymbol : String) (factor : Float) 
   , fromSI := u.fromSI / factor
   , offset := u.offset }
 
+/-! ## Compound Unit Construction -/
+
+/-- Multiply two units to produce a compound unit.
+    Example: `newton.mul meter` gives a unit for energy (N·m = J).
+
+    Note: Offsets are not supported for compound units. -/
+def mul {d1 d2 : Dimension} (u1 : Unit d1) (u2 : Unit d2) : Unit (d1.mul d2) :=
+  { name := s!"{u1.name}·{u2.name}"
+  , symbol := s!"{u1.symbol}·{u2.symbol}"
+  , toSI := u1.toSI * u2.toSI
+  , fromSI := u1.fromSI * u2.fromSI
+  , offset := 0.0 }
+
+/-- Divide two units to produce a compound unit.
+    Example: `meter.div second` gives a unit for velocity (m/s).
+
+    Note: Offsets are not supported for compound units. -/
+def div {d1 d2 : Dimension} (u1 : Unit d1) (u2 : Unit d2) : Unit (d1.div d2) :=
+  { name := s!"{u1.name}/{u2.name}"
+  , symbol := s!"{u1.symbol}/{u2.symbol}"
+  , toSI := u1.toSI / u2.toSI
+  , fromSI := u1.fromSI / u2.fromSI
+  , offset := 0.0 }
+
+/-- Square a unit.
+    Example: `meter.sq` gives square meters. -/
+def sq (u : Unit d) : Unit (d.pow 2) :=
+  { name := s!"{u.name}²"
+  , symbol := s!"{u.symbol}²"
+  , toSI := u.toSI * u.toSI
+  , fromSI := u.fromSI * u.fromSI
+  , offset := 0.0 }
+
+/-- Cube a unit.
+    Example: `meter.cube` gives cubic meters. -/
+def cube (u : Unit d) : Unit (d.pow 3) :=
+  { name := s!"{u.name}³"
+  , symbol := s!"{u.symbol}³"
+  , toSI := u.toSI * u.toSI * u.toSI
+  , fromSI := u.fromSI * u.fromSI * u.fromSI
+  , offset := 0.0 }
+
+/-- Reciprocal of a unit.
+    Example: `second.recip` gives per-second (Hz). -/
+def recip (u : Unit d) : Unit d.inv :=
+  { name := s!"1/{u.name}"
+  , symbol := s!"1/{u.symbol}"
+  , toSI := 1.0 / u.toSI
+  , fromSI := 1.0 / u.fromSI
+  , offset := 0.0 }
+
+/-- Raise a unit to an integer power.
+    Example: `meter.pow 2` gives square meters. -/
+def pow (u : Unit d) (n : Int) : Unit (d.pow n) :=
+  let nFloat : Float := n.toNat.toFloat  -- Note: only works correctly for non-negative n
+  { name := s!"{u.name}^{n}"
+  , symbol := s!"{u.symbol}^{n}"
+  , toSI := if n ≥ 0 then Float.pow u.toSI nFloat else Float.pow (1.0 / u.toSI) (-n).toNat.toFloat
+  , fromSI := if n ≥ 0 then Float.pow u.fromSI nFloat else Float.pow (1.0 / u.fromSI) (-n).toNat.toFloat
+  , offset := 0.0 }
+
 /-! ## Conversion Functions -/
 
 /-- Create a quantity in this unit.
@@ -93,6 +154,16 @@ instance : ToString (Unit d) where
   toString u := u.symbol
 
 end Unit
+
+/-! ## Operator Instances for Unit Arithmetic -/
+
+/-- Multiply units with `*` operator: `meter * second` -/
+instance {d1 d2 : Dimension} : HMul (Unit d1) (Unit d2) (Unit (d1.mul d2)) where
+  hMul := Unit.mul
+
+/-- Divide units with `/` operator: `meter / second` -/
+instance {d1 d2 : Dimension} : HDiv (Unit d1) (Unit d2) (Unit (d1.div d2)) where
+  hDiv := Unit.div
 
 /-! ## Infix Notation -/
 

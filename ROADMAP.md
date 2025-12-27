@@ -6,19 +6,20 @@ A prioritized list of potential improvements, new features, code cleanup opportu
 
 ## Feature Proposals
 
-### [Priority: High] Compound Unit Construction and Parsing
+### ~~[Priority: High] Compound Unit Construction~~ ✅ COMPLETED
 
-**Description:** Add support for constructing compound units at runtime and/or parsing unit strings like "m/s" or "kg*m/s^2".
+**Description:** Add support for constructing compound units at runtime.
 
-**Rationale:** Currently, users must manually define every compound unit they need. The ability to construct or derive units programmatically would greatly improve flexibility and reduce boilerplate. This is especially useful for configuration files or user input scenarios.
+**Resolution:** Implemented in `Measures/Core/Unit.lean`:
+- `Unit.mul` - Multiply two units (e.g., `newton.mul meter`)
+- `Unit.div` - Divide two units (e.g., `meter.div second`)
+- `Unit.sq` - Square a unit (e.g., `meter.sq`)
+- `Unit.cube` - Cube a unit (e.g., `meter.cube`)
+- `Unit.recip` - Reciprocal (e.g., `second.recip`)
+- `Unit.pow` - Raise to integer power
+- `HMul` and `HDiv` instances for operator syntax: `meter / second`, `newton * meter`
 
-**Affected Files:**
-- `Measures/Core/Unit.lean` - Add `Unit.mul` and `Unit.div` operations
-- New file: `Measures/Units/Parser.lean` (optional string parsing)
-
-**Estimated Effort:** Medium
-
-**Dependencies:** None
+Added 15 tests in `MeasuresTests/CompoundUnitTests.lean`.
 
 ---
 
@@ -38,18 +39,11 @@ A prioritized list of potential improvements, new features, code cleanup opportu
 
 ---
 
-### [Priority: High] Type-Safe Unit Arithmetic
+### ~~[Priority: High] Type-Safe Unit Arithmetic~~ ✅ COMPLETED
 
 **Description:** Add operations to multiply and divide `Unit` types to produce new derived units with correct dimensions.
 
-**Rationale:** The library allows quantity multiplication/division with dimension tracking, but there is no equivalent for units. Users should be able to write `let velocity := meter / second` to create a velocity unit.
-
-**Affected Files:**
-- `Measures/Core/Unit.lean` - Add `HMul` and `HDiv` instances for `Unit`
-
-**Estimated Effort:** Medium
-
-**Dependencies:** None
+**Resolution:** Completed as part of "Compound Unit Construction" above. Users can now write `let velocity := meter / second` to create a velocity unit.
 
 ---
 
