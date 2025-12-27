@@ -1,0 +1,90 @@
+/-
+  Measures.Core.Quantity
+
+  The Quantity type represents a physical quantity with a value and dimension.
+  The dimension is tracked at the type level for compile-time safety.
+-/
+
+import Measures.Core.Dimension
+
+namespace Measures
+
+/-- A quantity with dimension `d` and a floating-point value.
+    The dimension is tracked at the type level, enabling compile-time
+    dimensional analysis.
+
+    All quantities are stored in SI base units internally. -/
+structure Quantity (d : Dimension) where
+  /-- The numeric value in SI base units. -/
+  value : Float
+  deriving Repr, Inhabited
+
+namespace Quantity
+
+variable {d : Dimension}
+
+/-! ## Construction -/
+
+/-- Create a quantity with a given value (in SI base units). -/
+def mk' (value : Float) : Quantity d := { value }
+
+/-- Create a dimensionless quantity (pure number). -/
+def pure (x : Float) : Quantity Dimension.one := { value := x }
+
+/-- The zero quantity for any dimension. -/
+def zero : Quantity d := { value := 0.0 }
+
+/-! ## Extraction -/
+
+/-- Extract the raw value (in SI base units). -/
+def toFloat (q : Quantity d) : Float := q.value
+
+/-- Convert a dimensionless quantity to Float. -/
+def toPure (q : Quantity Dimension.one) : Float := q.value
+
+/-! ## Predicates -/
+
+/-- Check if a quantity is zero. -/
+def isZero (q : Quantity d) : Bool := q.value == 0.0
+
+/-- Check if a quantity is positive. -/
+def isPositive (q : Quantity d) : Bool := q.value > 0.0
+
+/-- Check if a quantity is negative. -/
+def isNegative (q : Quantity d) : Bool := q.value < 0.0
+
+/-! ## Basic Operations -/
+
+/-- Negate a quantity. -/
+def neg (q : Quantity d) : Quantity d := { value := -q.value }
+
+/-- Absolute value. -/
+def abs (q : Quantity d) : Quantity d := { value := Float.abs q.value }
+
+/-- Sign of a quantity (-1, 0, or 1). -/
+def signum (q : Quantity d) : Float :=
+  if q.value > 0.0 then 1.0
+  else if q.value < 0.0 then -1.0
+  else 0.0
+
+/-! ## Scalar Multiplication -/
+
+/-- Multiply a quantity by a scalar. -/
+def smul (s : Float) (q : Quantity d) : Quantity d := { value := s * q.value }
+
+/-- Divide a quantity by a scalar. -/
+def sdiv (q : Quantity d) (s : Float) : Quantity d := { value := q.value / s }
+
+/-! ## Display -/
+
+/-- Convert to string with given precision. -/
+def toString (q : Quantity d) (_precision : Nat := 4) : String :=
+  -- Simple implementation: just show the value
+  s!"{q.value}"
+
+instance : ToString (Quantity d) where
+  toString q := q.toString
+
+end Quantity
+
+end Measures
