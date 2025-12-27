@@ -22,7 +22,7 @@ structure Dimension where
   temperature : Int := 0  -- kelvin (K)
   amount      : Int := 0  -- mole (mol)
   luminosity  : Int := 0  -- candela (cd)
-  deriving Repr, BEq, DecidableEq, Inhabited
+  deriving Repr, BEq, DecidableEq, Inhabited, Hashable
 
 namespace Dimension
 

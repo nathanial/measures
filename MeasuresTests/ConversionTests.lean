@@ -132,6 +132,37 @@ test "kilogram -> pound -> kilogram" := do
   let kg2 := (lb *: pound).asUnit kilogram
   ensure (approxEq kg2 original 0.0001) s!"Expected {original}, got {kg2}"
 
+testSuite "Direct Unit Conversion"
+
+test "convert meter to foot" := do
+  let result := Unit.convert 1.0 meter foot
+  ensure (approxEq result 3.28084 0.0001) s!"Expected ~3.28084, got {result}"
+
+test "convert kilometer to mile" := do
+  let result := Unit.convert 1.609344 kilometer mile
+  ensure (approxEq result 1.0 0.0001) s!"Expected 1.0, got {result}"
+
+test "convert celsius to fahrenheit - freezing" := do
+  let result := Unit.convert 0.0 celsius fahrenheit
+  ensure (approxEq result 32.0 0.1) s!"Expected 32.0, got {result}"
+
+test "convert celsius to fahrenheit - boiling" := do
+  let result := Unit.convert 100.0 celsius fahrenheit
+  ensure (approxEq result 212.0 0.1) s!"Expected 212.0, got {result}"
+
+test "convert fahrenheit to celsius" := do
+  let result := Unit.convert 68.0 fahrenheit celsius
+  ensure (approxEq result 20.0 0.1) s!"Expected 20.0, got {result}"
+
+test "convert degree to radian" := do
+  let result := Unit.convert 180.0 degree radian
+  ensure (approxEq result π 0.0001) s!"Expected π, got {result}"
+
+test "convert is equivalent to quantity conversion" := do
+  let direct := Unit.convert 42.0 meter foot
+  let via_quantity := (42.0 *: meter).asUnit foot
+  ensure (approxEq direct via_quantity) "Direct and quantity conversion should match"
+
 #generate_tests
 
 end MeasuresTests.ConversionTests

@@ -77,6 +77,22 @@ test "quantity divided by scalar" := do
   let halved := q / 2.0
   halved.asUnit meter ≡ 5.0
 
+test "scalar times quantity" := do
+  let q := 5.0 *: meter
+  let doubled := 2.0 * q
+  doubled.asUnit meter ≡ 10.0
+
+test "scalar times quantity is commutative" := do
+  let q := 7.0 *: meter
+  let a := 3.0 * q
+  let b := q * 3.0
+  ensure (TestUtils.approxEq a.value b.value) "3.0 * q should equal q * 3.0"
+
+test "scalar times quantity with velocity" := do
+  let v := 10.0 *: meterPerSecond
+  let scaled := 0.5 * v
+  ensure (approxEq (scaled.asUnit meterPerSecond) 5.0) "Scaling velocity should work"
+
 testSuite "Powers"
 
 test "square" := do

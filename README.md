@@ -95,6 +95,22 @@ def rightAngle := 90.0 *: degree
 #eval rightAngle.asUnit radian  -- ~1.5708
 ```
 
+### Physical Constants
+
+```lean
+open Measures.Constants
+
+-- Fundamental constants with correct dimensions
+def energy := (1.0 *: kilogram) *. c *. c  -- E = mc²
+
+-- Available constants:
+-- c, h, ℏ, G           -- Fundamental
+-- e_charge, ε₀, μ₀     -- Electromagnetic
+-- k_B, σ, R            -- Thermodynamic
+-- N_A, m_e, m_p, m_n   -- Atomic/Nuclear
+-- α, a_0, g_n, atm     -- Derived
+```
+
 ## Dimension Tracking
 
 Dimensions are represented as integer exponents of the 7 SI base dimensions:
@@ -173,12 +189,20 @@ def distance := 4.24 *: lightYear
 - `q.cube` - Cube
 - `q.sqrt` - Square root
 - `q.recip` - Reciprocal
-- `q * s` / `q / s` - Scalar multiplication/division
+- `q * s` / `s * q` - Scalar multiplication (both orders work)
+- `q / s` - Scalar division
 
 ### Unit Conversions
 
 - `value *: unit` - Create quantity in unit
 - `q.asUnit unit` - Express quantity in unit
+- `Unit.convert value fromUnit toUnit` - Direct conversion between units
+
+```lean
+-- Direct conversion without intermediate quantity
+Unit.convert 100.0 celsius fahrenheit  -- 212.0
+Unit.convert 1.0 mile kilometer        -- 1.609344
+```
 
 ### Pretty Printing
 

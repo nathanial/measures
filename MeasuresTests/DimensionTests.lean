@@ -94,6 +94,24 @@ test "sqrt halves exponents" := do
   let sqrtL4 := (Length.pow 4).sqrt
   sqrtL4 ≡ Area
 
+testSuite "Dimension Hashable"
+
+test "equal dimensions have equal hashes" := do
+  let d1 := Length
+  let d2 : Dimension := { length := 1 }
+  ensure (hash d1 == hash d2) "Equal dimensions should have equal hashes"
+
+test "different dimensions can have different hashes" := do
+  let len := Length
+  let mass := Mass
+  -- Not guaranteed but highly likely
+  ensure (hash len != hash mass) "Different dimensions likely have different hashes"
+
+test "hash is consistent" := do
+  let d := Velocity
+  -- Calling hash multiple times should give same result
+  ensure (hash d == hash d) "Hash should be consistent"
+
 #generate_tests
 
 end MeasuresTests.DimensionTests

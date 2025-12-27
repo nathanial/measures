@@ -92,18 +92,28 @@ Added 8 tests in `MeasuresTests/QuantityTests.lean`.
 
 ---
 
-### [Priority: Medium] Physical Constants Module
+### ~~[Priority: Medium] Physical Constants Module~~ ✅ COMPLETED
 
-**Description:** Add a module with commonly used physical constants (speed of light, Planck's constant, gravitational constant, etc.) as typed quantities.
+**Description:** Add a module with commonly used physical constants as typed quantities.
 
-**Rationale:** Physics and engineering applications frequently need these constants. Providing them with correct dimensions would be valuable and demonstrate the library's type safety.
+**Resolution:** Expanded `Measures/Constants.lean` with 20+ physical constants including:
 
-**Affected Files:**
-- New file: `Measures/Constants.lean`
+**Fundamental:**
+- Speed of light (`c`), Planck constant (`h`, `ℏ`), gravitational constant (`G`)
 
-**Estimated Effort:** Small
+**Electromagnetic:**
+- Elementary charge (`e_charge`), vacuum permittivity (`ε₀`), vacuum permeability (`μ₀`)
 
-**Dependencies:** None
+**Thermodynamic:**
+- Boltzmann constant (`k_B`), Stefan-Boltzmann (`σ`), gas constant (`R`)
+
+**Atomic/Nuclear:**
+- Avogadro constant (`N_A`), electron/proton/neutron mass (`m_e`, `m_p`, `m_n`), atomic mass unit (`u`)
+
+**Derived:**
+- Fine-structure constant (`α`), Rydberg constant, Bohr radius (`a_0`), standard gravity (`g_n`), standard atmosphere (`atm`)
+
+All constants have correct dimensions and short aliases. Added 23 tests including E=mc² calculation.
 
 ---
 
@@ -171,34 +181,25 @@ Added 8 tests in `MeasuresTests/QuantityTests.lean`.
 
 ## Code Improvements
 
-### [Priority: High] DecidableEq Instance for Quantity
+### ~~[Priority: High] DecidableEq Instance for Quantity~~ ✅ COMPLETED
 
-**Current State:** `Quantity` only has `BEq` but lacks `DecidableEq`.
+**Issue:** `Quantity` only had `BEq` but lacked `DecidableEq`.
 
-**Proposed Change:** Add `DecidableEq` instance to enable propositional equality proofs and use in `if` expressions without `decide`.
+**Resolution:** Added `DecidableEq` instance using IEEE 754 bit-level equality via `Float.toUInt64`. Enables propositional equality proofs and use in `if` expressions without `decide`.
 
-**Benefits:** Better integration with Lean's type system, enables more idiomatic Lean code.
-
-**Affected Files:**
-- `Measures/Core/Quantity.lean`
-
-**Estimated Effort:** Small
+Added 3 tests in `MeasuresTests/QuantityTests.lean`.
 
 ---
 
-### [Priority: High] Hashable Instance for Quantity and Dimension
+### ~~[Priority: High] Hashable Instance for Quantity and Dimension~~ ✅ COMPLETED
 
-**Current State:** `Dimension` and `Quantity` lack `Hashable` instances.
+**Issue:** `Dimension` and `Quantity` lacked `Hashable` instances.
 
-**Proposed Change:** Add `Hashable` instances to enable use in `HashMap` and `HashSet`.
+**Resolution:**
+- Added `Hashable` to `Dimension` deriving clause
+- Added manual `Hashable` instance for `Quantity` using `Float.toUInt64`
 
-**Benefits:** Enables efficient lookup tables indexed by dimensions or quantities.
-
-**Affected Files:**
-- `Measures/Core/Dimension.lean`
-- `Measures/Core/Quantity.lean`
-
-**Estimated Effort:** Small
+Enables use in `HashMap` and `HashSet`. Added 3 tests each for Dimension and Quantity.
 
 ---
 
@@ -446,33 +447,26 @@ Added 8 tests in `MeasuresTests/QuantityTests.lean`.
 
 ## API Improvements
 
-### [Priority: High] Operator Overloading for Float * Quantity
+### ~~[Priority: High] Operator Overloading for Float * Quantity~~ ✅ COMPLETED
 
-**Current State:** `Float * Quantity` is not supported, only `Quantity * Float`.
+**Issue:** `Float * Quantity` was not supported, only `Quantity * Float`.
 
-**Proposed Change:** Add `HMul Float (Quantity d) (Quantity d)` instance.
+**Resolution:** Added `HMul Float (Quantity d) (Quantity d)` instance in `Measures/Ops/Arithmetic.lean`.
 
-**Benefits:** More natural syntax: `2.0 * distance` instead of `distance * 2.0`.
-
-**Affected Files:**
-- `Measures/Ops/Arithmetic.lean`
-
-**Estimated Effort:** Small
+Now both forms work: `2.0 * distance` and `distance * 2.0`. Added 3 tests.
 
 ---
 
-### [Priority: High] Direct Unit Conversion Function
+### ~~[Priority: High] Direct Unit Conversion Function~~ ✅ COMPLETED
 
-**Current State:** Converting between units requires: `(value *: unit1).asUnit unit2`
+**Issue:** Converting between units required: `(value *: unit1).asUnit unit2`
 
-**Proposed Change:** Add `convert : Float -> Unit d -> Unit d -> Float` for direct conversion without intermediate quantity.
+**Resolution:** Added `Unit.convert` function in `Measures/Core/Unit.lean`:
+```lean
+def convert (value : Float) (fromUnit toUnit : Unit d) : Float
+```
 
-**Benefits:** Cleaner syntax for simple conversions: `convert 100.0 celsius fahrenheit`
-
-**Affected Files:**
-- `Measures/Core/Unit.lean`
-
-**Estimated Effort:** Small
+Example: `Unit.convert 100.0 celsius fahrenheit` returns `212.0`. Added 7 tests.
 
 ---
 

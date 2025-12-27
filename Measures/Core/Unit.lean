@@ -148,6 +148,14 @@ def fromQuantity (u : Unit d) (q : Quantity d) : Float :=
     -- For temperature: value = SI / scale - offset
     q.value * u.fromSI - u.offset
 
+/-- Convert a value directly from one unit to another.
+    Example: `convert 100.0 celsius fahrenheit` returns `212.0`
+
+    This is equivalent to `(value *: fromUnit).asUnit toUnit` but
+    provides cleaner syntax for simple conversions. -/
+def convert (value : Float) (fromUnit toUnit : Unit d) : Float :=
+  toUnit.fromQuantity (fromUnit.quantity value)
+
 /-! ## Display -/
 
 instance : ToString (Unit d) where

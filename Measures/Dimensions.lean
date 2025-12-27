@@ -95,6 +95,32 @@ def MagneticFlux : Dimension := { mass := 1, length := 2, time := -2, current :=
 /-- Magnetic field strength (T = kg/(A·s²)). -/
 def MagneticField : Dimension := { mass := 1, time := -2, current := -1 }
 
+/-! ## Dimensions for Physical Constants -/
+
+/-- Action (J·s = kg·m²/s). Used for Planck's constant. -/
+def Action : Dimension := { mass := 1, length := 2, time := -1 }
+
+/-- Gravitational constant dimension (m³/(kg·s²)). -/
+def GravitationalConstant : Dimension := { length := 3, mass := -1, time := -2 }
+
+/-- Entropy / Heat capacity (J/K = kg·m²/(s²·K)). Used for Boltzmann constant. -/
+def Entropy : Dimension := { mass := 1, length := 2, time := -2, temperature := -1 }
+
+/-- Molar entropy (J/(mol·K)). Used for gas constant. -/
+def MolarEntropy : Dimension := { mass := 1, length := 2, time := -2, temperature := -1, amount := -1 }
+
+/-- Inverse amount (1/mol). Used for Avogadro's number. -/
+def InverseAmount : Dimension := { amount := -1 }
+
+/-- Electric permittivity (F/m = A²·s⁴/(kg·m³)). -/
+def Permittivity : Dimension := { mass := -1, length := -3, time := 4, current := 2 }
+
+/-- Magnetic permeability (H/m = kg·m/(A²·s²)). -/
+def Permeability : Dimension := { mass := 1, length := 1, time := -2, current := -2 }
+
+/-- Stefan-Boltzmann constant dimension (W/(m²·K⁴)). -/
+def StefanBoltzmann : Dimension := { mass := 1, time := -3, temperature := -4 }
+
 /-! ## Aliases for Readability -/
 
 abbrev Dimensionless := Dimension.one

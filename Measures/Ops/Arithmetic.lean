@@ -101,6 +101,13 @@ def divScalar (q : Quantity d) (s : Float) : Quantity d :=
 instance : HMul (Quantity d) Float (Quantity d) where
   hMul := mulScalar
 
+/-- Scalar multiplication (Float * Quantity). -/
+def scalarMul (s : Float) (q : Quantity d) : Quantity d :=
+  { value := s * q.value }
+
+instance : HMul Float (Quantity d) (Quantity d) where
+  hMul := scalarMul
+
 instance : HDiv (Quantity d) Float (Quantity d) where
   hDiv := divScalar
 

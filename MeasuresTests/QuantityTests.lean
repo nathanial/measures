@@ -118,6 +118,36 @@ test "format preserves non-zero decimals" := do
   let formatted := distance.format meter
   ensure (formatted == "3.5 m") s!"Expected '3.5 m', got '{formatted}'"
 
+testSuite "Quantity DecidableEq"
+
+test "equal quantities are decidably equal" := do
+  let q1 := 5.0 *: meter
+  let q2 := 5.0 *: meter
+  ensure (q1 = q2) "Equal quantities should be propositionally equal"
+
+test "different quantities are decidably not equal" := do
+  let q1 := 5.0 *: meter
+  let q2 := 10.0 *: meter
+  ensure (q1 ≠ q2) "Different quantities should not be equal"
+
+test "can use in if expression with propositional equality" := do
+  let q1 := 100.0 *: meter
+  let q2 := 100.0 *: meter
+  let result := if q1 = q2 then "same" else "different"
+  ensure (result == "same") "Should be able to use = in if"
+
+testSuite "Quantity Hashable"
+
+test "equal quantities have equal hashes" := do
+  let q1 := 5.0 *: meter
+  let q2 := 5.0 *: meter
+  ensure (hash q1 == hash q2) "Equal quantities should have equal hashes"
+
+test "hash is consistent" := do
+  let q := 42.0 *: meter
+  -- Calling hash multiple times should give same result
+  ensure (hash q == hash q) "Hash should be consistent"
+
 #generate_tests
 
 end MeasuresTests.QuantityTests

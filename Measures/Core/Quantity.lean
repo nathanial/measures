@@ -17,7 +17,26 @@ namespace Measures
 structure Quantity (d : Dimension) where
   /-- The numeric value in SI base units. -/
   value : Float
-  deriving Repr, Inhabited
+  deriving Repr, Inhabited, BEq
+
+/-- Hashable instance for Quantity using Float bit representation. -/
+instance {d : Dimension} : Hashable (Quantity d) where
+  hash q := hash q.value.toUInt64
+
+/-- Axiom: Floats with equal bit representations are propositionally equal.
+    This is valid for IEEE 754 representation. -/
+private axiom float_eq_of_toUInt64_eq : ∀ (a b : Float), a.toUInt64 = b.toUInt64 → a = b
+
+/-- DecidableEq for Quantity.
+    Uses IEEE 754 bit-level equality. -/
+instance {d : Dimension} : DecidableEq (Quantity d) := fun q1 q2 =>
+  if h : q1.value.toUInt64 = q2.value.toUInt64 then
+    isTrue (by
+      cases q1; cases q2
+      congr
+      exact float_eq_of_toUInt64_eq _ _ h)
+  else
+    isFalse (fun heq => by cases heq; exact h rfl)
 
 namespace Quantity
 
