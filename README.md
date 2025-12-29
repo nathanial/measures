@@ -37,7 +37,7 @@ def speed := distance /. time  -- Quantity Dimension.Velocity
 Add to your `lakefile.lean`:
 
 ```lean
-require measures from ".." / "measures"
+require measures from git "https://github.com/nathanial/measures" @ "v0.0.1"
 ```
 
 ## Building
