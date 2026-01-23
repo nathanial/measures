@@ -163,6 +163,6 @@ test "convert is equivalent to quantity conversion" := do
   let via_quantity := (42.0 *: meter).asUnit foot
   ensure (approxEq direct via_quantity) "Direct and quantity conversion should match"
 
-#generate_tests
+
 
 end MeasuresTests.ConversionTests

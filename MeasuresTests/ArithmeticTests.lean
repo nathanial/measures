@@ -141,6 +141,6 @@ test "max of two quantities" := do
   let maximum := Quantity.max a b
   maximum.asUnit meter ≡ 5.0
 
-#generate_tests
+
 
 end MeasuresTests.ArithmeticTests

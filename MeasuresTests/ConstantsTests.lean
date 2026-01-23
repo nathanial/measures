@@ -116,6 +116,6 @@ test "Boltzmann and gas constant relation" := do
   let computed := N_A.value * k_B.value
   ensure (approxEq computed R.value 1e-6) "R should equal N_A * k_B"
 
-#generate_tests
+
 
 end MeasuresTests.ConstantsTests

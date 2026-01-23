@@ -112,6 +112,6 @@ test "hash is consistent" := do
   -- Calling hash multiple times should give same result
   ensure (hash d == hash d) "Hash should be consistent"
 
-#generate_tests
+
 
 end MeasuresTests.DimensionTests

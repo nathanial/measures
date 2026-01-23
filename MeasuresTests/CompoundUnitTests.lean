@@ -103,6 +103,6 @@ test "mixed multiply and divide" := do
   let force := 10.0 *: unit
   ensure (approxEq (force.asUnit newton) 10.0) "Expected 10 N"
 
-#generate_tests
+
 
 end MeasuresTests.CompoundUnitTests
